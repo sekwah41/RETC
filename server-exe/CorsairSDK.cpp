@@ -381,11 +381,17 @@ RZRESULT CorsairSDK::prepareHeadsetEffect(int type, const char effectData[]) {
 	return RZRESULT_SUCCESS;
 }
 
+#define gamma (1.0/1.7)
+
+int addGamma(int color) {
+	return (int) (pow(color / 255.0, gamma) * 255.0);
+}
+
 CorsairLedColor CorsairSDK::convertLedColor(const COLORREF& color) {
 	CorsairLedColor ledColor;
-	ledColor.r = GetRValue(color);
-	ledColor.g = GetGValue(color);
-	ledColor.b = GetBValue(color);
+	ledColor.r = addGamma(GetRValue(color));
+	ledColor.g = addGamma(GetGValue(color));
+	ledColor.b = addGamma(GetBValue(color));
 	ledColor.ledId = CLI_Invalid;
 
 	return ledColor;
